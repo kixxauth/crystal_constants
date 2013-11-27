@@ -117,6 +117,40 @@ class Widget extends Crystal
 rectangle = new Widget {width: 50, height: 100}
 ```
 
+## Why?
+
+There isn't really any way to define constants in JavaScript like there are in
+other languages. However, we can achieve the same thing in JavaScript with
+Object.defineProperty and Object.freeze. However, these techniques have a
+major flaw, demonstrated with this Node.js console session:
+
+```
+> var x = Object.create(null)
+undefined
+> x
+{}
+> Object.defineProperty(x, 'FOO', {value: 99, enumerable: true})
+{ FOO: 99 }
+> x.FOO
+99
+> x.FOO = 100
+100
+> x.FOO
+99
+> Object.freeze(x)
+{ FOO: 99 }
+> x.FOO = 100
+100
+> x.FOO
+99
+```
+
+Bummer. Instead of throwing an error, V8 (the JavaScript engine in Node.js)
+just let us assign values to `x.FOO` even though it had already been defined
+and frozen. The value of `x.FOO` didn't change, but V8 didn't tell us that the
+assignments failed. That's not very useful if you need constants and expect
+them to behave like constants.
+
 ## Testing
 To run the tests, just do
 

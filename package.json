@@ -1,0 +1,12 @@
+{
+    "name": "crystal_constants",
+    "version": "1.0.0",
+    "description": "A little JavaScript / CoffeeScript utility class for frozen 'constant' objects.",
+    "author": "Kris Walker <kris@kixx.name> (http://www.kixx.name/)",
+    "keywords": ["constants", "constant","frozen","object", "class"],
+    "repository": {"type":"git", "url":"https://github.com/kixxauth/crystal_constants"},
+    "bugs": "https://github.com/kixxauth/crystal_constants/issues",
+    "devDependencies": {
+        "nodeunit": "0.8.2"
+    }
+}

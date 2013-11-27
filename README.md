@@ -43,6 +43,9 @@ try {
   // Throws an error.
 }
 
+// Test if a constant is already defined:
+CONST.isDefined('MONTHS_IN_YEAR') // true
+
 // You can assign multiple constants at once:
 CONST.define({
   JAN: 31,
@@ -63,7 +66,12 @@ try {
   // Throws
 }
 
-// Or multiple constants at once:
+// Test if already defined:
+var isDefined = require('crystal').isDefined
+
+isDefined('COLOR').on(exports) // true
+
+// Define multiple constants at once:
 define({HEIGHT: 44, WIDTH: 99}).on(exports)
 
 // Decorate Your Own Prototypes
@@ -95,7 +103,7 @@ try {
 ```
 
 ```CoffeeScript
-## Or, for extra awesome sauce, in CoffeeScript:
+# Or in CoffeeScript, for extra awesome sauce:
 
 class Widget extends Crystal
   constructor: (spec) ->

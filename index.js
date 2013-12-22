@@ -2,8 +2,7 @@ exports.newCrystalConstructor = function () {
   var privateValues = []
 
   function Crystal() {
-    var length = privateValues.push(Object.create(null));
-    this._private_values_ref = length - 1;
+    ensurePrivateValues(this);
   }
 
   Crystal.prototype.define = function (name, value) {
@@ -19,7 +18,7 @@ exports.newCrystalConstructor = function () {
       throw new Error("Property '"+ name +"' is already defined.")
     }
 
-    var ref = privateValues[this._private_values_ref]
+    var ref = ensurePrivateValues(this);
 
     function setter(val) {
       if (hasOwnProperty(ref, name)) {
@@ -39,8 +38,13 @@ exports.newCrystalConstructor = function () {
   };
 
   Crystal.prototype.isDefined = function (name) {
-    var ref = privateValues[this._private_values_ref]
-    return hasOwnProperty(ref, name);
+    var ref = ensurePrivateValues(this);
+    if (hasOwnProperty(ref, name)) return true;
+    return hasOwnProperty(this, name);
+  };
+
+  Crystal.prototype.freeze = function () {
+    return Object.freeze(this);
   };
 
   Crystal.create = function (values) {
@@ -51,48 +55,19 @@ exports.newCrystalConstructor = function () {
     return obj;
   };
 
+  function ensurePrivateValues(target) {
+    if (typeof target._private_values_ref === 'undefined') {
+      var length = privateValues.push(Object.create(null));
+      target._private_values_ref = length - 1;
+    }
+    return privateValues[target._private_values_ref];
+  }
+
   return Crystal;
 };
 
 exports.Crystal = exports.newCrystalConstructor();
 
-
-exports.define = (function () {
-  function makeCrystal(args) {
-    var self = Object.create(null)
-
-    self.on = function (target) {
-      return Crystal.prototype.define.apply(target, args);
-    };
-
-    return self;
-  }
-
-  function define() {
-    return makeCrystal(arguments);
-  }
-
-  return define;
-}());
-
-
-exports.isDefined = (function () {
-  function makeCrystal(args) {
-    var self = Object.create(null)
-
-    self.on = function (target) {
-      return Crystal.prototype.isDefined.apply(target, args);
-    };
-
-    return self;
-  }
-
-  function isDefined() {
-    return makeCrystal(arguments);
-  }
-
-  return isDefined;
-}());
 
 function hasOwnProperty(x, prop) {
   return Object.prototype.hasOwnProperty.call(x, prop);

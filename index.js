@@ -38,8 +38,6 @@ exports.newCrystalConstructor = function () {
   };
 
   Crystal.prototype.isDefined = function (name) {
-    var ref = ensurePrivateValues(this);
-    if (hasOwnProperty(ref, name)) return true;
     return hasOwnProperty(this, name);
   };
 

@@ -231,3 +231,27 @@ exports["With a decorated prototype"] = {
     return test.done();
   }
 };
+
+exports["With more than 1 instance of Crystal"] = {
+  setUp: function (done) {
+    this.instance1 = Crystal.create({HOST: '127.0.0.1'});
+    this.instance2 = Crystal.create({PORT: 80});
+    return done();
+  },
+
+  "constant keys do not collide": function (test) {
+    test.equal(this.instance1.HOST, '127.0.0.1');
+    test.equal(this.instance2.PORT, 80);
+
+    this.instance1.define('PORT', 8080);
+    this.instance2.define('HOST', 'localhost');
+
+    test.equal(this.instance1.HOST, '127.0.0.1');
+    test.equal(this.instance2.PORT, 80);
+    test.equal(this.instance1.PORT, 8080);
+    test.equal(this.instance2.HOST, 'localhost');
+
+    return test.done();
+  }
+
+};

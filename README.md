@@ -17,7 +17,7 @@ Alternatively, you can quickly install Crystal for use in a project by running
 
 which will install crystal_constants in your `node_modules/` folder.
 
-## Example
+## Examples
 
 ```JavaScript
 // Getting Started
@@ -28,7 +28,7 @@ var CONST = Crystal.create({DAYS_IN_YEAR: 365})
 CONST.DAYS_IN_YEAR // 365
 
 try {
-  CONST.DAYS_IN_YEAR = 366
+  CONST.DAYS_IN_YEAR = 364
 } catch (err) {
   // Assignment to a 'constant' property throws an error.
 }
@@ -53,29 +53,8 @@ CONST.define({
 , MAR: 31
 })
 
-// Constants on Existing Objects
-// =============================
-var define = require('crystal').define
-
-define('COLOR', 'red').on(exports)
-exports.COLOR // red
-
-try {
-  exports.COLOR = 'blue'
-} catch (err) {
-  // Throws
-}
-
-// Test if already defined:
-var isDefined = require('crystal').isDefined
-
-isDefined('COLOR').on(exports) // true
-
-// Define multiple constants at once:
-define({HEIGHT: 44, WIDTH: 99}).on(exports)
-
-// Decorate Your Own Prototypes
-// ============================
+// Inherit on Your Own Prototypes
+// ==============================
 var Crystal = require('crystal').Crystal
 var util = require('util')
 

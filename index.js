@@ -41,7 +41,19 @@ exports.newCrystalConstructor = function () {
   };
 
   Crystal.prototype.freeze = function () {
-    return Object.freeze(this);
+    var self = this
+
+    Object.freeze(self);
+
+    Object.keys(self).forEach(function (key) {
+      var obj = self[key]
+
+      if (typeof obj === 'object') {
+        self.freeze.call(obj);
+      }
+    });
+
+    return self;
   };
 
   Crystal.create = function (values) {

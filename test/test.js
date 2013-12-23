@@ -127,7 +127,7 @@ exports['With a new Crystal instance'] = {
     } catch (err) {
       test.equal(err.message, "Cannot set private constant reference value.");
     }
-    
+
     return test.done();
   }
 };
@@ -136,6 +136,7 @@ exports["With a frozen Crystal instance"] = {
   setUp: function (done) {
     this.CONST = Crystal.create();
     this.CONST.foo = 'bar';
+    this.CONST.define('SETTINGS', {host: 'localhost', port: 80});
     this.CONST.freeze();
     return done();
   },
@@ -161,6 +162,14 @@ exports["With a frozen Crystal instance"] = {
   "setting new properties is a noop": function (test) {
     this.CONST.height = 900;
     test.strictEqual(this.CONST.height, undefined);
+    return test.done();
+  },
+
+  "deeply freezes nested objects": function (test) {
+    test.equal(this.CONST.SETTINGS.host, 'localhost');
+    this.CONST.SETTINGS.host = '127.0.0.1';
+    test.equal(this.CONST.SETTINGS.host, 'localhost');
+    test.ok(Object.isFrozen(this.CONST.SETTINGS));
     return test.done();
   }
 };

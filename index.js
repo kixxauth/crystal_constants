@@ -55,7 +55,22 @@ exports.newCrystalConstructor = function () {
 
   function ensurePrivateValues(target) {
     if (typeof target._private_values_ref === 'undefined') {
-      var length = privateValues.push(Object.create(null));
+      var pointer, length
+
+      Object.defineProperty(target, '_private_values_ref', {
+        set: function (val) {
+          if (pointer) {
+            throw new Error("Cannot set private constant reference value.");
+          }
+          pointer = val;
+        },
+
+        get: function () {
+          return pointer;
+        }
+      });
+
+      length = privateValues.push(Object.create(null));
       target._private_values_ref = length - 1;
     }
     return privateValues[target._private_values_ref];

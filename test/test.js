@@ -117,6 +117,18 @@ exports['With a new Crystal instance'] = {
     this.CONST.freeze();
     test.ok(Object.isFrozen(this.CONST));
     return test.done();
+  },
+
+  "setting private ref pointer raises an error": function (test) {
+    test.expect(1);
+
+    try {
+      this.CONST._private_values_ref = (9*9*9*9);
+    } catch (err) {
+      test.equal(err.message, "Cannot set private constant reference value.");
+    }
+    
+    return test.done();
   }
 };
 

@@ -29,7 +29,6 @@ exports.newCrystalConstructor = function () {
 
     Object.defineProperty(this, name, {
       enumerable: true
-    , configurable: false
     , set: setter
     , get: function () { return ref[name]; }
     });
